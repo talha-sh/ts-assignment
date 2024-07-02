@@ -1,9 +1,13 @@
 // main.ts
-import { CrudRepository } from './repository';
+import { GenericApi } from './genericApiCall';
 import { Product, User } from './interfaces';
-
-const productRepository = new CrudRepository<Product>('https://fakestoreapi.com/products');
-const userRepository = new CrudRepository<User>('https://fakestoreapi.com/users');
+const readline = require('node:readline');
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+const productRepository = new GenericApi<Product>('https://fakestoreapi.com/products');
+const userRepository = new GenericApi<User>('https://fakestoreapi.com/users');
 
 async function fetchProducts() {
   try {
@@ -58,29 +62,44 @@ async function deleteProduct(id: number) {
   }
 }
 
-(async () => {
-  await console.log(fetchProducts());
-  await console.log(fetchUsers());
-
-  const newProduct: Product = {
-    id: 0,
-    title: 'New Product',
-    price: 29.99,
-    description: 'A new product for testing',
-    category: 'test-category',
-    image: 'https://via.placeholder.com/150'
-  };
-  await addProduct(newProduct);
-
-  const updatedProduct: Product = {
-    id: 0,
-    title: 'Updated Product',
-    price: 39.99,
-    description: 'An updated product for testing',
-    category: 'updated-category',
-    image: 'https://via.placeholder.com/150'
-  };
-  await updateProduct(1, updatedProduct);
-
-  await deleteProduct(1);
+(() => {
+  rl.question(`Please select an option\n1: View all products\n2: View all users\n3: Add a product\n4: Update a product\n5: Delete a product\n`, async (option:string) => {
+    switch (option) {
+      case "1":
+         console.log(await fetchProducts());
+        break;
+      case "2":
+        console.log(await fetchUsers());
+        break;
+      case "3":
+        const newProduct: Product = {
+          id: 0,
+          title: 'New Product',
+          price: 29.99,
+          description: 'A new product for testing',
+          category: 'test-category',
+          image: 'https://via.placeholder.com/150'
+        };
+        console.log(await addProduct(newProduct));
+        console.log("A hard coded user has been added");
+        break;
+      case "4":
+          const updatedProduct: Product = {
+            id: 0,
+            title: 'Updated Product',
+            price: 39.99,
+            description: 'An updated product for testing',
+            category: 'updated-category',
+            image: 'https://via.placeholder.com/150'
+          };
+          console.log(await updateProduct(1, updatedProduct));
+        break;
+      case "5":
+        console.log(await deleteProduct(1));
+        break;
+      default:
+        console.log("Invalid Input")
+    }
+    rl.close();
+  });
 })();
