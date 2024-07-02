@@ -4,4 +4,4 @@
 
 3: run the command "npm run build"
 
-4: open index.html file from dist folder.
+4: run the command "node dist/bundle.js"
