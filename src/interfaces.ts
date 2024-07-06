@@ -26,3 +26,12 @@ export interface User {
   };
   phone: string;
 }
+export interface CartItem {
+  product: Product;
+  quantity: number;
+}
+
+export interface Order {
+  items: CartItem[];
+  total: number;
+}
