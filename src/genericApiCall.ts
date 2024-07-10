@@ -1,4 +1,3 @@
-// repository.ts
 import axios from 'axios';
 
 interface IGenericApi<T> {
@@ -20,7 +19,6 @@ export class GenericApi<T> implements IGenericApi<T> {
     return response.data;
   }
 
-
   async create(item: T): Promise<T> {
     const response = await axios.post<T>(this.url, item);
     return response.data;
@@ -31,7 +29,7 @@ export class GenericApi<T> implements IGenericApi<T> {
       const response = await axios.put<T>(`${this.url}/${id}`, item);
       return response.data;
     } catch (error) {
-      console.error(`Error updating by ID ${id}:`, error);
+      console.error('Update error:', error);
       return null;
     }
   }
@@ -41,7 +39,7 @@ export class GenericApi<T> implements IGenericApi<T> {
       await axios.delete(`${this.url}/${id}`);
       return true;
     } catch (error) {
-      console.error(`Error deleting by ID ${id}:`, error);
+      console.error('Delete error:', error);
       return false;
     }
   }

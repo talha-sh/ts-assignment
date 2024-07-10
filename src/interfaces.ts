@@ -1,5 +1,3 @@
-// interfaces.ts
-
 export interface Product {
   id: number;
   title: string;
@@ -26,6 +24,7 @@ export interface User {
   };
   phone: string;
 }
+
 export interface CartItem {
   product: Product;
   quantity: number;
